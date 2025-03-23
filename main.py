@@ -6,45 +6,6 @@ from typing import List
 
 app = FastAPI()
 
-books = [
-    {
-        "id": 1,
-        "title": "Think Python",
-        "author": "Allen B. Downey",
-        "publisher": "O'Reilly Media",
-        "published_date": "2021-01-01",
-        "page_count": 1234,
-        "language": "English",
-    },
-    {
-        "id": 2,
-        "title": "Django by example",
-        "author": "Antonio Mele",
-        "publisher": "Pakt",
-        "published_date": "2022-01-19",
-        "page_count": 1203,
-        "language": "English",
-    },
-    {
-        "id": 3,
-        "title": "The web socket handbook",
-        "author": "Alex Diaconu",
-        "publisher": "Wang",
-        "published_date": "2022-01-18",
-        "page_count": 1209,
-        "language": "English",
-    },
-    {
-        "id": 4,
-        "title": "Pinocchio",
-        "author": "Collodi",
-        "publisher": "Rizzoli",
-        "published_date": "2022-01-18",
-        "page_count": 1234,
-        "language": "Italian",
-    },
-]
-
 
 class Book(BaseModel):
     id: int
