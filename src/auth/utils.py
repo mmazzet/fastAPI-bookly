@@ -28,7 +28,6 @@ def create_access_token(user_data: dict, expiry:timedelta = None, refresh: bool=
 
     payload['refresh'] = refresh
 
-
     token = jwt.encode(
         payload=payload,
         key=Config.JWT_SECRET,
