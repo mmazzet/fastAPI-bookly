@@ -13,7 +13,6 @@ user_service = UserService()
 
 REFRESH_TOKEN_EXPIRY = 2
 
-
 @auth_router.post(
     "/signup", response_model=UserModel, status_code=status.HTTP_201_CREATED
 )
