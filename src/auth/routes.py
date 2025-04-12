@@ -7,6 +7,7 @@ from fastapi.exceptions import HTTPException
 from .utils import create_access_token, decode_token, verify_password
 from datetime import timedelta
 from fastapi.responses import JSONResponse
+from .dependencies import RefreshTokenBearer
 
 auth_router = APIRouter()
 user_service = UserService()
@@ -77,3 +78,8 @@ async def login_users(login_data: UserLoginModel, session: AsyncSession = Depend
         status_code=status.HTTP_403_FORBIDDEN,
         detail="Invalid email or password"
     )
+
+@auth_router.get("/refresh_token")
+async def get_new_access_token(token_details:dict = Depends(RefreshTokenBearer())):
+
+    return{}
