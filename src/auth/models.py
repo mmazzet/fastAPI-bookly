@@ -22,7 +22,7 @@ class User(SQLModel, table=True):
     password_hash: str = Field(exclude=True)
     created_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
     update_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
-    books: List['models.Book'] = Relationship(back_populates="users", sa_relationship_kwargs={'lazy':'selectin'})
+    books: List['models.Book'] = Relationship(back_populates="user", sa_relationship_kwargs={'lazy':'selectin'})
 
     def __repr__(self):
         return f"<User {self.username}>"
