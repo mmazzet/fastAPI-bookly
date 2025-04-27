@@ -21,6 +21,8 @@ class UserModel(BaseModel):
     password_hash: str = Field(exclude=True)
     created_at: datetime 
     update_at: datetime 
+
+class UserBooksModel(UserModel):    #this class inherits from UserModel - added to fix bug of Create a User account 
     books: List[Book]
 
 class UserLoginModel(BaseModel):
