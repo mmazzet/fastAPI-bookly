@@ -50,7 +50,7 @@ class Book(SQLModel, table=True):
     created_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
     update_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
     user: Optional['User'] = Relationship(back_populates="books")
-    book: Optional['User'] = Relationship(back_populates="reviews")
+    # book: Optional['User'] = Relationship(back_populates="reviews")
     reviews: List['Review'] = Relationship(back_populates="book", sa_relationship_kwargs={'lazy':'selectin'})
 
     def __repr__(self):
