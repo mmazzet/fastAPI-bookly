@@ -50,3 +50,19 @@ class ReviewService:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Oops... something went wrong",
             )
+
+    async def delete_review_with_id(self, review_uid:str, user_email:str, session:AsyncSession):
+        user = await user_service.get_user_by_email(user_email, session)
+
+
+        review_to_delete = await self.get_review(review_uid, session)
+
+        if not review_to_delete or (review_to_delete.user != user):
+            raise HTTPException(
+                detail="Cannot delete this review",
+                status_code=status.HTTP_403_FORBIDDEN,
+            )
+
+        session.delete(review_to_delete)
+
+        await session.commit()
