@@ -18,13 +18,13 @@ def register_middleware(app):
 
         response = await call_next(request)
         processing_time = time.time() - start_time
-        message = f"{request.client.host}:{request.client.port} - {request.method} - {request.url.path} - {response.status_code} - c o m p l e t e d   a f t e r  {processing_time}s"
+        message = f"{request.client.host}:{request.client.port} - {request.method} - {request.url.path} - {response.status_code} - completed after {processing_time}s"
 
         print(message)
 
         return response
     
-    @app.middleware('http')
+    app.middleware('http')
     async def authorization(request:Request, call_next):
         if not 'Authorization' in request.headers:
             return JSONResponse(
