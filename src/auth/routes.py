@@ -44,7 +44,7 @@ async def send_mail(emails:EmailModel):
     return {"message":"Email sent successfully"}
 
 @auth_router.post(
-    "/signup", response_model=UserModel, status_code=status.HTTP_201_CREATED
+    "/signup", status_code=status.HTTP_201_CREATED
 )
 async def create_user_Account(
     user_data: UserCreateModel, session: AsyncSession = Depends(get_session)
