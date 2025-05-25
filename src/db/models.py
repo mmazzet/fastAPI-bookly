@@ -1,8 +1,9 @@
-from sqlmodel import SQLModel, Field, Column, Relationship
-import sqlalchemy.dialects.postgresql as pg
-from typing import List, Optional
 import uuid
-from datetime import datetime, date
+from datetime import date, datetime
+from typing import List, Optional
+
+import sqlalchemy.dialects.postgresql as pg
+from sqlmodel import Column, Field, Relationship, SQLModel
 
 
 class User(SQLModel, table=True):

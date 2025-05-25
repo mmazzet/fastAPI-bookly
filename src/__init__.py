@@ -1,12 +1,16 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
-from src.books.routes import book_router
+
 from src.auth.routes import auth_router
-from src.reviews.routes import review_router
-from contextlib import asynccontextmanager
+from src.books.routes import book_router
 from src.db.main import init_db
+from src.reviews.routes import review_router
+
 from .errors import register_all_errors
 from .middleware import register_middleware
+
 
 @asynccontextmanager
 async def life_span(app:FastAPI):

@@ -1,23 +1,19 @@
-from fastapi import Request, status, Depends
-from fastapi.security import HTTPBearer
-
-from fastapi.security.http import HTTPAuthorizationCredentials
-from .utils import decode_token
-from fastapi.exceptions import HTTPException
-from src.db.redis import token_in_blocklist
-from sqlmodel.ext.asyncio.session import AsyncSession
-from src.db.main import get_session
-from .service import UserService
 from typing import List
+
+from fastapi import Depends, Request, status
+from fastapi.exceptions import HTTPException
+from fastapi.security import HTTPBearer
+from fastapi.security.http import HTTPAuthorizationCredentials
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from src.db.main import get_session
 from src.db.models import User
-from src.errors import (
-    InvalidToken,
-    RefreshTokenRequired,
-    AccessTokenRequired,
-    InsufficientPermission,
+from src.db.redis import token_in_blocklist
+from src.errors import (AccessTokenRequired, InsufficientPermission,
+                        InvalidToken, RefreshTokenRequired)
 
-
-)
+from .service import UserService
+from .utils import decode_token
 
 user_service = UserService()
 

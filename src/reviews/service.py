@@ -1,9 +1,11 @@
-from src.db.models import Review
+from fastapi import status
+from fastapi.exceptions import HTTPException
+from sqlmodel.ext.asyncio.session import AsyncSession
+
 from src.auth.service import UserService
 from src.books.service import BookService
-from sqlmodel.ext.asyncio.session import AsyncSession
-from fastapi.exceptions import HTTPException
-from fastapi import status
+from src.db.models import Review
+
 from .schemas import ReviewCreateModel
 
 book_service = BookService()

@@ -1,8 +1,11 @@
-from src.db.models  import User
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from src.db.models import User
+
 from .schemas import UserCreateModel
 from .utils import generate_passwd_hash
-from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlmodel import select
+
 
 class UserService:
     async def get_user_by_email(self, email: str, session: AsyncSession):

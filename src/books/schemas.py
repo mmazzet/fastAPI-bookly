@@ -1,8 +1,10 @@
-from pydantic import BaseModel
-from datetime import datetime, date
-from src.reviews.schemas import ReviewModel
-from typing import List
 import uuid
+from datetime import date, datetime
+from typing import List
+
+from pydantic import BaseModel
+
+from src.reviews.schemas import ReviewModel
 
 
 class Book(BaseModel):

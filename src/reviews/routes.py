@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from src.db.models import User
-from src.db.main import get_session
-from src.auth.dependencies import get_current_user, RoleChecker
 from sqlmodel.ext.asyncio.session import AsyncSession
+
+from src.auth.dependencies import RoleChecker, get_current_user
+from src.db.main import get_session
+from src.db.models import User
+
 from .schemas import ReviewCreateModel
 from .service import ReviewService
 

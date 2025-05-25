@@ -1,21 +1,22 @@
+from datetime import datetime, timedelta
+
 from fastapi import APIRouter, Depends, status
-from .schemas import UserBooksModel, UserCreateModel, UserModel, UserLoginModel, EmailModel
-from .service import UserService
-from src.db.main import get_session
-from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi.exceptions import HTTPException
-from .utils import create_access_token, decode_token, verify_password
-from src.errors import UserAlreadyExists, UserNotfound, InvalidCredentials, InvalidToken
-from datetime import timedelta, datetime
 from fastapi.responses import JSONResponse
-from .dependencies import (
-    RefreshTokenBearer,
-    AccessTokenBearer,
-    get_current_user,
-    RoleChecker,
-)
-from src.mail import mail, create_message
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from src.db.main import get_session
 from src.db.redis import add_jti_to_blocklist
+from src.errors import (InvalidCredentials, InvalidToken, UserAlreadyExists,
+                        UserNotfound)
+from src.mail import create_message, mail
+
+from .dependencies import (AccessTokenBearer, RefreshTokenBearer, RoleChecker,
+                           get_current_user)
+from .schemas import (EmailModel, UserBooksModel, UserCreateModel,
+                      UserLoginModel, UserModel)
+from .service import UserService
+from .utils import create_access_token, decode_token, verify_password
 
 auth_router = APIRouter()
 user_service = UserService()

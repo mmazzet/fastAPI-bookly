@@ -5,16 +5,18 @@
 # Helps to access all you can access from a FastAPI instance
 # You can access the HTTP methods
 
-from fastapi import APIRouter, status, Depends
+from typing import List
+
+from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
-from .schemas import Book, BookUpdateModel, BookCreateModel, BookDetailModel
 from sqlmodel.ext.asyncio.session import AsyncSession
+
+from src.auth.dependencies import AccessTokenBearer, RoleChecker
 from src.books.service import BookService
 from src.db.main import get_session
-from typing import List
-from src.auth.dependencies import AccessTokenBearer, RoleChecker
 from src.errors import BookNotFound
 
+from .schemas import Book, BookCreateModel, BookDetailModel, BookUpdateModel
 
 book_router = APIRouter()
 book_service = BookService()
