@@ -16,7 +16,9 @@ from .dependencies import (AccessTokenBearer, RefreshTokenBearer, RoleChecker,
 from .schemas import (EmailModel, UserBooksModel, UserCreateModel,
                       UserLoginModel, UserModel)
 from .service import UserService
-from .utils import create_access_token, decode_token, verify_password
+from .utils import create_access_token, decode_token, verify_password, create_url_safe_token, decode_url_safe_token
+
+from src.config import Config
 
 auth_router = APIRouter()
 user_service = UserService()
@@ -56,7 +58,27 @@ async def create_user_Account(
 
     new_user = await user_service.create_user(user_data, session)
 
-    return new_user
+    token = create_url_safe_token({"email":email})
+
+    link= f"http://{Config.DOMAIN}/api/v1/auth/verify/{token}"
+
+    html_message = f"""
+    <h1>Verify your Email</h1>
+    <p>Please click this <a href="{link}">link</a> to verify your email</p>
+    """
+
+    message = create_message(
+        recipients=[email],
+        subject="Verify your email",
+        body=html_message
+    )
+
+    await mail.send_message(message)
+
+    return {
+        "message":"Account Created! Check email to verify your account",
+        "user": new_user
+    }
 
 
 @auth_router.post("/login")
