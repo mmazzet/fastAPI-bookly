@@ -82,6 +82,9 @@ class BookNotFound(BooklyException):
     """
     pass
 
+class AccountNotVerified(Exception):
+    """Account not yet verified"""
+    pass
 
 def create_exception_handler(status_code: int, initial_detail: Any) -> Callable[[Request, Exception ], JSONResponse]:
     async def exception_handler(request: Request, exc: BooklyException):
@@ -184,6 +187,18 @@ def register_all_errors(app: FastAPI):
             initial_detail={
                 "message":"YOu do not have enough permissions to perform this action",
                 "error_code":"insufficient_permissions"
+            }
+        )
+    )
+
+    app.add_exception_handler(
+        AccountNotVerified,
+        create_exception_handler(
+            status_code=status.HTTP_403_FORBIDDEN,
+            initial_detail={
+                "message":"Account Not Verified",
+                "error_code":"account_not_verified",
+                "resolution":"Please check your email for verification details"
             }
         )
     )
