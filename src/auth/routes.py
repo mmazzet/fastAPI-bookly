@@ -14,7 +14,7 @@ from src.mail import create_message, mail
 from .dependencies import (AccessTokenBearer, RefreshTokenBearer, RoleChecker,
                            get_current_user)
 from .schemas import (EmailModel, UserBooksModel, UserCreateModel,
-                      UserLoginModel, UserModel)
+                      UserLoginModel, UserModel, PasswordResetRequestModel)
 from .service import UserService
 from .utils import create_access_token, decode_token, verify_password, create_url_safe_token, decode_url_safe_token
 
@@ -165,4 +165,39 @@ async def revoke_token(token_details: dict = Depends(AccessTokenBearer())):
     await add_jti_to_blocklist(jti)
     return JSONResponse(
         content={"message": "Logged out successfully"}, status_code=status.HTTP_200_OK
+    )
+
+
+"""
+1. provide the email - > password reset request
+2. send passwoed reset link
+3. reset password - > password reset confirm
+"""
+
+@auth_router.post('/password-reset-request')
+async def password_reset_request(email_data:PasswordResetRequestModel):
+    email = email_data.email
+
+    token = create_url_safe_token({"email":email})
+
+    link= f"http://{Config.DOMAIN}/api/v1/auth/password-reset-confirm/{token}"
+
+    html_message = f"""
+    <h1>Reset your password</h1>
+    <p>Please click this <a href="{link}">link</a> to reset your password</p>
+    """
+
+    message = create_message(
+        recipients=[email],
+        subject="Reset your password",
+        body=html_message
+    )
+
+    await mail.send_message(message)
+
+    return JSONResponse(
+        content={
+        "message":"Please chekc your email for instructions to reset your password",
+
+        }, status_code=status.HTTP_200_OK
     )
