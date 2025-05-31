@@ -14,9 +14,9 @@ from src.mail import create_message, mail
 from .dependencies import (AccessTokenBearer, RefreshTokenBearer, RoleChecker,
                            get_current_user)
 from .schemas import (EmailModel, UserBooksModel, UserCreateModel,
-                      UserLoginModel, UserModel, PasswordResetRequestModel)
+                      UserLoginModel, UserModel, PasswordResetRequestModel, PasswordResetConfirmModel)
 from .service import UserService
-from .utils import create_access_token, decode_token, verify_password, create_url_safe_token, decode_url_safe_token
+from .utils import (create_access_token, decode_token, verify_password, create_url_safe_token, decode_url_safe_token, generate_passwd_hash)
 
 from src.config import Config
 
@@ -201,3 +201,34 @@ async def password_reset_request(email_data:PasswordResetRequestModel):
 
         }, status_code=status.HTTP_200_OK
     )
+
+@auth_router.get('/password-reset-confirm/{token}')
+async def reset_account_password(token:str, passwords:PasswordResetConfirmModel, session:AsyncSession=Depends(get_session)):
+
+    new_password = passwords.new_password
+    confirm_password = passwords.confirm_password
+    
+    if new_password != confirm_password:
+        raise HTTPException(detail="Passwords do not match", status_code=status.HTTP_400_BAD_REQUEST)
+
+
+    token_data = decode_url_safe_token(token)
+
+    user_email = token_data.get('email')
+
+    if user_email:
+        user = await user_service.get_user_by_email(user_email, session)
+
+        if not user:
+            raise UserNotfound()
+        
+        passwd_hash = generate_passwd_hash(new_password)
+        await user_service.update_user(user, {'password': passwd_hash}, session)
+
+        return JSONResponse(content={
+            "message":"Password reset successfully"
+        }, status_code=status.HTTP_200_OK,)
+
+    return JSONResponse(content={
+            "message":"Error occurred during password reset"
+    }, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,)
