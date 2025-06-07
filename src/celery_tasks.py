@@ -13,3 +13,4 @@ def send_email(recipients:list[str], subject:str, body:str):
     )
 
     async_to_sync(mail.send_message)(message)
+    print("Email sent")
