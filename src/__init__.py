@@ -13,23 +13,32 @@ from .middleware import register_middleware
 
 
 @asynccontextmanager
-async def life_span(app:FastAPI):
+async def life_span(app: FastAPI):
     print(f"server is starting...")
     await init_db()
     yield
     print(f"server has been stopped")
+
 
 version = "v1"
 
 # The info below will appear on the Swagger documentation
 app = FastAPI(
     title="Bookly",
-    decription="A RestAPI for a book review web service",
-    version = version,
-    docs_url= f"/api/{version}/docs",
+    description="A RestAPI for a book review web service",
+    version=version,
+    license_info = {
+        "name":"MIT",
+        "url":"https://opensource.org/licenses/mit"
+    },
+    docs_url=f"/api/{version}/docs",
+    redoc_url=f"/api/{version}/redoc",
+    openapi_url=f"/api/{version}/openapi.json",
     contact={
-        "email":"company@mymail.com"
-    }
+        "name":"The company",
+        "email": "company@mymail.com",
+        "url": "https://thegoodcompany.io"
+    },
 )
 
 register_all_errors(app)
@@ -37,6 +46,6 @@ register_all_errors(app)
 register_middleware(app)
 
 
-app.include_router(book_router, prefix=f"/api/{version}/books", tags=['books'])
-app.include_router(auth_router, prefix=f"/api/{version}/auth", tags=['auth'])
-app.include_router(review_router, prefix=f"/api/{version}/reviews", tags=['reviews'])
+app.include_router(book_router, prefix=f"/api/{version}/books", tags=["books"])
+app.include_router(auth_router, prefix=f"/api/{version}/auth", tags=["auth"])
+app.include_router(review_router, prefix=f"/api/{version}/reviews", tags=["reviews"])
