@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlmodel import SQLModel
 
 from src.config import Config
-from src.db.models import Book, User
+from src.db.models import Book, User, Review
 
 database_url = Config.DATABASE_URL
 

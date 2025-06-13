@@ -1,1 +1,34 @@
-Generic single-database configuration with an async dbapi.
+# Bookly
+
+Bookly is a RESTful API for a book review web service, built with FastAPI, SQLModel, and PostgreSQL. It supports user authentication, book management, and review functionality, with JWT-based authentication and role-based access control.
+
+## Features
+
+- User registration, login, and email verification
+- JWT authentication (access and refresh tokens)
+- Role-based access control (admin, user)
+- CRUD operations for books
+- Users can submit and manage reviews for books
+- Email notifications (FastAPI-Mail, Celery)
+- Asynchronous database operations with SQLModel and SQLAlchemy
+- Alembic migrations for database schema management
+
+## Project Structure
+
+bookly/
+├── src/
+│   ├── __init__.py
+│   ├── auth/
+│   ├── books/
+│   ├── db/
+│   ├── reviews/
+│   ├── celery_tasks.py
+│   ├── config.py
+│   ├── errors.py
+│   ├── mail.py
+│   └── middleware.py
+├── migrations/
+├── requirements.txt
+├── alembic.ini
+├── start_project.sh
+└── README.md
