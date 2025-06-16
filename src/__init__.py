@@ -24,6 +24,7 @@ version = "v1"
 
 # The info below will appear on the Swagger documentation
 app = FastAPI(
+    lifespan=life_span,
     title="Bookly",
     description="A RestAPI for a book review web service",
     version=version,
@@ -41,6 +42,8 @@ app = FastAPI(
     },
 )
 
+
+
 register_all_errors(app)
 
 register_middleware(app)
@@ -49,3 +52,11 @@ register_middleware(app)
 app.include_router(book_router, prefix=f"/api/{version}/books", tags=["books"])
 app.include_router(auth_router, prefix=f"/api/{version}/auth", tags=["auth"])
 app.include_router(review_router, prefix=f"/api/{version}/reviews", tags=["reviews"])
+
+
+@app.get("/", include_in_schema=False)
+def root():
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Welcome to the Bookly API. Visit /api/v1/docs for API docs."}
+    )
